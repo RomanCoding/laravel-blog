@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 class TagController extends Controller
 {
     /**
+     * TagController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -35,7 +44,10 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:tags,name'
+        ]);
+        return Tag::create($request->all());
     }
 
     /**
@@ -65,11 +77,15 @@ class TagController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Tag  $tag
-     * @return \Illuminate\Http\Response
+     * @return array
      */
     public function update(Request $request, Tag $tag)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:tags,name'
+        ]);
+        $tag->update($request->all());
+        return ['success' => true];
     }
 
     /**
@@ -80,6 +96,6 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        $tag->delete();
     }
 }

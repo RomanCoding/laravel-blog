@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    protected $fillable = ['title', 'body', 'user_id'];
+
     /**
      * A post belongs to a user who wrote it.
      *
@@ -52,5 +54,15 @@ class Post extends Model
     public function comment($data)
     {
         return $this->comments()->create($data);
+    }
+
+    public function getCommentsCountAttribute()
+    {
+        return $this->comments()->count();
+    }
+
+    public function scopePopular($query, $num = 10)
+    {
+        return $query->orderBy('comments_count', 'desc')->limit($num);
     }
 }

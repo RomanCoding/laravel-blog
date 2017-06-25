@@ -10,4 +10,7 @@
     <div class="panel-body">
         {{ $post->body }}
     </div>
+    @foreach($post->tags as $tag)
+        <span class="label label-primary">{{ $tag->name }}</span>
+    @endforeach
 </div>
